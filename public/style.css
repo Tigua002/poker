@@ -1,0 +1,108 @@
+body{
+    margin: 0%;
+    padding: 0%;
+}
+
+#header{
+    height: 10vh;
+    display: flex;
+    justify-content: space-between;
+    background-color: #111;
+    color: white;
+    padding: 2vh;
+}
+#title, #leave{
+    font-size: 2vw;
+}
+#body_div{
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    height: 90vh;
+}
+#bottom{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+}
+#buttons_div{
+    display: flex;
+    justify-content: center;
+}
+.pokerBtn{
+    border: solid black 1px;
+    width: 15vw;
+    cursor: pointer;
+}
+.card{
+    width: 10vw;
+}
+#playingCards{
+    width: 100%;
+    height: 30vh;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+.playcard{
+    width: 10vw;
+}
+.headerImg{
+    width: 8vw;
+}
+.gameHolder{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.games{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 2vw;
+    background-color: snow;
+    border: solid 1px black;
+    margin: 3vw;
+}
+.titleHolder{
+    border: none;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    font-size: 2vw;
+}
+.gameBtn{
+    border: solid 1px black;
+    padding: 2vw;
+    cursor: pointer;
+}
+.joingame{
+    cursor: pointer;
+}
+.players{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+.player{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: solid 1px #111;
+    width: 90%;
+}
+#leave{
+    cursor: pointer;
+}
+.startGameBtn{
+    border: solid black 1px;
+    padding: 2vw;
+    cursor: pointer;
+}

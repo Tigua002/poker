@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker | Play</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="header">
+        <a href="login.html" class="headerImg">
+            <img src="bilder/user.png" alt="login icon" class="headerImg">
+        </a>
+        <a href="games.html">
+            <h2 id="title">POKER</h2>
+        </a>
+        <h2 id="pot">0</h2>
+        <h2 id="playerBalance">1000</h2>
+        <h2 id="leave">LEAVE</h2>
+    </div>
+    <div id="body_div">
+        <div id="playingCards">
+            <img src="" class="playcard" alt="">
+            <img src="" class="playcard" alt="">
+            <img src="" class="playcard" alt="">
+            <img src="" class="playcard" alt="">
+            <img src="" class="playcard" alt="">
+        </div>
+        <div id="card_holder">
+            <div class="cardDiv">
+                <img src="" class="card" alt="">
+                <img src="" class="card" alt="">
+            </div>
+            <div class="cardDiv">
+                <img src="" class="card" alt="">
+                <img src="" class="card" alt="">
+            </div>
+        </div>
+        <div id="bottom">
+
+            <div id="buttons_div">
+                <div class="cardDiv">
+                    <button id="check" class="pokerBtn">CHECK</button>
+                    <button id="raise" class="pokerBtn">RAISE</button>
+                </div>
+            </div>
+            <div id="card_holder">
+                <img src="" class="card" alt="">
+                <img src="" class="card" alt="">
+            </div>
+            <button id="fold" class="pokerBtn" onclick="fold()">FOLD</button>
+        </div>
+    </div>
+</body>
+<script src="index.js"></script>
+
+</html>

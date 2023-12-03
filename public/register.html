@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="header">
+        <a href="login.html" class="headerImg">
+            <img src="bilder/user.png" alt="login icon" class="headerImg">
+        </a>
+        <a href="games.html">
+            <h2 id="title">POKER</h2>
+        </a>
+        <h2 id="pot">0</h2>
+        <h2 id="playerBalance">1000</h2>
+        <h2 id="leave">LEAVE</h2>
+    </div>
+    <form onsubmit="signup()" class="signupForm">
+        <div id="signupHolder">
+            <h1 class="signupTitle">signup</h1>
+            <div id="inputsHolder">
+                <input id="brukernavn" maxlength="50" type="text" name="brukernavn" placeholder="Username" class="signupInputs"
+                    required>
+                <input id="password" maxlength="40" type="text" name="passord" placeholder="Password" class="signupInputs"
+                    required>
+            </div>
+            <button type="submit" class="signupSubmitBtn" onsubmit="signup()">Sign Up</button>
+    </form>
+    <script src="signup.js"></script>
+</body>
+</html>
