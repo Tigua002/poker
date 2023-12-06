@@ -39,9 +39,8 @@ let check = document.getElementById("check")
 let raiseBtn = document.getElementById("raise")
 let foldBtn = document.getElementById("fold")
 // drawing cards for the players
-for (let i = 0; i < playerstats.length; i++) {
-    drawHand(playerstats[i].hand)
-}
+loadPlayers()
+
 // adding event listeners
 check.addEventListener("click", call)
 raiseBtn.addEventListener('click', raise)
@@ -50,9 +49,15 @@ raiseBtn.addEventListener('click', raise)
 
 
 
-loadPlayers()
+
 async function loadPlayers() {
-    let name = sessionStorage.getItem("gameID")
+    let name = ""
+    if (!sessionStorage.getItem("gameID")) {
+        window.location.assign("games.html")
+    } else {
+        name = sessionStorage.getItem("gameID")
+
+    }
     const responce = await fetch("/gameer/" + name,
         {
             method: "GET"
@@ -78,12 +83,52 @@ async function loadPlayers() {
         playerstats[i].combined = []
         playerstats[i].hand = []
         playerstats[i].folded = false
+        if (sessionStorage.getItem("username") == JSON.parse(sessionStorage.getItem("game")).host) {
+            drawHand(playerstats[i].hand)
+        }
+        if (playerstats[i].username == sessionStorage.getItem("username") && playerstats[i].playerID == turn) {
+            enableBtns()
+        }
     }
-    console.log(playerstats);
+    if (sessionStorage.getItem("username") == JSON.parse(sessionStorage.getItem("game")).host) {
+        // sets the data the server will need
+        const data = {
+            playerstats: JSON.stringify(playerstats)
+        }
+        // sends the data to the database
+        fetch("/draw/cards", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+    }
+    setTimeout(2000, loadCards)
 }
-console.log(playerstats);
-// creating the deck
 
+
+async function loadCards() {
+    // setter stares as the response from the stats table
+    const stares = await fetch("/stats",
+        {
+            method: "GET"
+        })
+    // sets the variable stats = the stats of all players
+    const stats = await stares.json()
+    for (let i = 0; i < stats.length; i++) {
+        for (let x = 0; x < playerstats.length; x++) {
+            if (playerstats[x].username == sessionStorage.getItem("username") && sessionStorage.getItem("username") == stats[i].username) {
+                playerstats[x].hand = JSON.parse(stats[i].hand)
+                updateHand()
+            }
+
+        }
+
+
+    }
+}
+// creating the deck
 function createDeck() {
     // defining deck
     let deck = []
@@ -145,14 +190,23 @@ function drawHand(hand) {
         hand.push(drawCard())
         hand.push(drawCard())
         // updating playerhand
-        updateHand(hand, 4, 5)
     }
 }
 
 // function i need to remove / useless function
-function updateHand(hand, card1, card2) {
-    document.getElementsByClassName("card")[card1].src = "kort/" + hand[0].rank + "_of_" + hand[0].suit + ".svg"
-    document.getElementsByClassName("card")[card2].src = "kort/" + hand[1].rank + "_of_" + hand[1].suit + ".svg"
+function updateHand() {
+    console.log("e");
+    for (let i = 0; i < playerstats.length; i++) {
+        console.log(playerstats[i].username);
+        console.log(playerstats[i]);
+        if (playerstats[i].username == sessionStorage.getItem("username")) {
+            document.getElementsByClassName("card")[playerstats[i].playerID * 2].src = "kort/" + playerstats[i].hand[0].rank + "_of_" + playerstats[i].hand[0].suit + ".svg"
+            document.getElementsByClassName("card")[playerstats[i].playerID * 2 + 1].src = "kort/" + playerstats[i].hand[1].rank + "_of_" + playerstats[i].hand[1].suit + ".svg"
+        }
+
+    }
+    // document.getElementsByClassName("card")[card1].src = "kort/" + hand[0].rank + "_of_" + hand[0].suit + ".svg"
+    // document.getElementsByClassName("card")[card2].src = "kort/" + hand[1].rank + "_of_" + hand[1].suit + ".svg"
 }
 // shows all of the opponents hands
 function showOpp() {
@@ -194,6 +248,37 @@ function call() {
 
         }
     }
+    if (sessionStorage.getItem("username") == JSON.parse(sessionStorage.getItem("game")).host) {
+        const data = {
+            deck: JSON.stringify(deck),
+            code: sessionStorage.getItem("gameID"),
+            turn: turn
+        }
+        // sends the data to the database
+
+        fetch("/save/cards", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+    } else{
+        const data = {
+            code: sessionStorage.getItem("gameID"),
+            turn: turn
+        }
+        // sends the data to the database
+
+        fetch("/save/turn", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+    }
+
 }
 
 
@@ -475,12 +560,15 @@ function checkWinner() {
 }
 
 function checkTurns() {
+    
     for (let i = 0; i < playerstats.length; i++) {
         if (turn == playerstats[i].playerID) {
             enableBtns()
+            return
         }
 
     }
+    disableBtns()
 }
 
 function disableBtns() {
@@ -494,3 +582,5 @@ function enableBtns() {
     raiseBtn.disabled = false
     foldBtn.disabled = false
 }
+
+

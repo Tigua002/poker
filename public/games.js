@@ -59,6 +59,9 @@ async function loadGames() {
 
 // the join game function
 async function joinGame(event) {
+    if (!sessionStorage.getItem("username")) {
+        sessionStorage.setItem("username", "guest")
+    }
     // sets gamecode as the unique code for the game the users wishes to join
     let gamecode = event.target.parentElement.getElementsByClassName("gameName")[0].innerHTML
     // getting all the games from the database
@@ -105,10 +108,11 @@ async function updateData() {
     // setting games as the database responce
     const games = await res.json()
     // checking if the current table = the previous table (in loadGame function)
-    if (games == JSON.parse(sessionStorage.getItem("allGames"))) {
+    if (JSON.stringify(games) == sessionStorage.getItem("allGames")) {
         // logs same if they are the same
         console.log("same");
     } else {
+        console.log("updated");
         // if not then we resett the gameHolder element
         document.getElementById("gameHolder").innerHTML = `
         <div class="titleHolder">

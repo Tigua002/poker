@@ -51,7 +51,7 @@ async function login() {
                     
                 }
                 // sends the user to index.html
-                window.location.assign("index.html")
+                window.location.assign("games.html")
                 // ends the function to prevent extra resources being taken
                 return
             }
