@@ -53,7 +53,7 @@ app.post("/create/game/", function (req, res) {
         let code = req.body.password
         let privacy = req.body.privacy
         connection.query(`CREATE TABLE ${name} (playerID INT, username VARCHAR (100), balance INT, status VARCHAR(50))`)
-        connection.query(`INSERT INTO games VALUES ("${name}", "${user}", "${code}", "${privacy}", "waiting", "[]")`)
+        connection.query(`INSERT INTO games VALUES ("${name}", "${user}", "${code}", "${privacy}", "waiting", "[]", 0)`)
         connection.query(`INSERT INTO ${name} VALUES (${userID}, "${user}", ${balance}, "waiting")`)
         connection.query(`UPDATE users SET gameName = "${code}" WHERE username = "${user}"`)
         res.send(name)
@@ -112,7 +112,7 @@ app.post("/save/cards/", function (req, res) {
     let code = req.body.code
     let deck = req.body.deck
     let turn = req.body.turn
-    connection.query(`UPDATE games SET deck = "${deck}", turn = "${turn}" WHERE gameName = "${code}"`)
+    connection.query(`UPDATE games SET deck = '${deck}', turn = "${turn}" WHERE gameName = "${code}"`)
 })
 app.post("/save/turn/", function (req, res) {
     let code = req.body.code
@@ -160,5 +160,13 @@ app.get('/gameer/:a', (req, res) => {
         res.send(data)
     })
 });
+
+app.get('/single/games/:a', (req, res) => {
+    connection.query(`SELECT * FROM games WHERE gameName = "${req.params.a}"`, function (err, result, fields) {
+        let data = JSON.parse(JSON.stringify(result))
+        res.send(data)
+    })
+});
+
 
 app.use(express.static("public"))

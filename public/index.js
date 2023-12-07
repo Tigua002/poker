@@ -233,7 +233,7 @@ function call() {
     }
     // updateing player balance
     document.getElementById("playerBalance").innerHTML = playerBalance
-    if (cards.length < 5) {
+    if (cards.length < 5 && sessionStorage.getItem("username") == JSON.parse(sessionStorage.getItem("game")).host && cards.length != 0) {
         // checking the amount of cards on the table
         gameStart(cards.length)
     } else {
@@ -263,7 +263,7 @@ function call() {
             },
             body: JSON.stringify(data)
         })
-    } else{
+    } else {
         const data = {
             code: sessionStorage.getItem("gameID"),
             turn: turn
@@ -560,7 +560,6 @@ function checkWinner() {
 }
 
 function checkTurns() {
-    
     for (let i = 0; i < playerstats.length; i++) {
         if (turn == playerstats[i].playerID) {
             enableBtns()
@@ -570,17 +569,37 @@ function checkTurns() {
     }
     disableBtns()
 }
-
+// disables the different button
 function disableBtns() {
     check.disabled = true
     raiseBtn.disabled = true
     foldBtn.disabled = true
 }
-
+// enables the different button
 function enableBtns() {
     check.disabled = false
     raiseBtn.disabled = false
     foldBtn.disabled = false
 }
 
+async function checkChanges() {
+    // getting the unique game code from sessionstorage
+    let name = sessionStorage.getItem("gameID")
+    // requests the database for all info about the game    
+    const responce = await fetch("/single/games/" + name,
+        {
+            method: "GET"
+        })
+    // sets game as the value we recieve from the database
+    const game = await responce.json()
+    console.log(game[0]);
+    console.log(JSON.parse(sessionStorage.getItem("game")));
+    if (JSON.stringify(game[0]) != sessionStorage.getItem("game")){
+        sessionStorage.setItem("game", JSON.stringify(game[0]))
+
+    } else{
+        return
+    }
+    checkTurns()
+}
 
