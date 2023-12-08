@@ -28,6 +28,7 @@ let winCon = [
     { name: "HIGH CARD", rank: 10, combo: "", },
     { name: "LOW CARD", rank: 11, combo: "", }
 ]
+console.log(winCon[10].rank)
 // getting playerstats from the database with all userinfo 
 var playerstats = []
 // adding the conditions to the userinfo, don't wnat to take up a lot of space in the database
